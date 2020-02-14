@@ -5,6 +5,7 @@
     dest: "{{ debug_dir }}/{{ inventory_hostname }}.yml"
     owner: "{{ debug_owner }}"
     group: "{{ debug_group }}"
+  check_mode: false
   tags:
     - debug
 ...
