@@ -1,0 +1,10 @@
+---
+- name: "Write variables to {{ debug_dir }}/{{ inventory_hostname }}.yml"
+  template:
+    src: debug.yml
+    dest: "{{ debug_dir }}/{{ inventory_hostname }}.yml"
+    owner: "{{ debug_owner }]"
+    group: "{{ debug_group }}"
+  tags:
+    - debug
+...
