@@ -2,4 +2,8 @@
 debug_dir: /root
 debug_owner: root
 debug_group: root
+# If debug_fetch is true the file will be written to
+# the debug_local_dir on the Ansible Controller 
+debug_fetch: false
+debug_local_dir: /tmp
 ...

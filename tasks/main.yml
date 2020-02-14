@@ -8,4 +8,16 @@
   check_mode: false
   tags:
     - debug
+
+- name: Fetch the variables file
+  fetch:
+    src: "{{ debug_dir }}/{{ inventory_hostname }}.yml"
+    dest: "{{ debug_local_dir }}/{{ inventory_hostname }}.yml"
+    flat: true
+  check_mode: false
+  when:
+    - debug_fetch is defined
+    - debug_fetch
+  tags:
+    - debug
 ...
