@@ -1,0 +1,21 @@
+---
+# {{ ansible_managed }}
+
+{% if users is defined %}
+# User Variables
+{{ users | to_nice_yaml }}
+{% endif %}
+
+{% if environment is defined and environment != [] %}
+# Environment Variables
+{{ environment | to_nice_yaml }}
+{% endif %}
+
+# Group Variables
+{{ groups | to_nice_yaml }}
+
+# Host Variables
+{{ hostvars[inventory_hostname] | to_nice_yaml }}
+
+# vim: set ft=yaml: 
+...
