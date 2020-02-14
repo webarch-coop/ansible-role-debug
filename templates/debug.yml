@@ -6,8 +6,10 @@
 {{ users | to_nice_yaml }}
 {% endif %}
 
+{% if environment is defined and environment != [] %}
 # Environment Variables
 {{ environment | to_nice_yaml }}
+{% endif %}
 
 # Group Variables
 {{ groups | to_nice_yaml }}
