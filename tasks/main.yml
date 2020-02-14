@@ -1,7 +1,7 @@
 ---
 - name: "Write variables to {{ debug_dir }}/{{ inventory_hostname }}.yml"
   template:
-    src: debug.yml
+    src: debug.yml.j2
     dest: "{{ debug_dir }}/{{ inventory_hostname }}.yml"
     owner: "{{ debug_owner }}"
     group: "{{ debug_group }}"
