@@ -5,5 +5,10 @@ debug_group: root
 # If debug_fetch is true the file will be written to
 # the debug_local_dir on the Ansible Controller
 debug_fetch: false
+# If debug_email is true the file will be sent to
+# the debug_email_address
+debug_email: true
+debug_email_address: root@localhost
+debug_email_subject: "Ansible variables for {{ inventory_hostname }}"
 debug_local_dir: /tmp
 ...

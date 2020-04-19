@@ -20,4 +20,18 @@
     - debug_fetch
   tags:
     - debug
+
+- name: "Debug email sent"
+  mail:
+    from: "root@{{ inventory_hostname }}"
+    to: "{{ debug_email_address | default('root@localhost') }}"
+    subject: "{{ debug_email_subject | default('Ansible variables') }}"
+    charset: us-ascii
+    body: "{{ debug_dir }}/{{ inventory_hostname }}.yml"
+    host: localhost
+    port: 25
+    secure: never
+  when:
+    - ( debug_email is defined ) and ( debug_email == True )
+    - ( debug_email_address is defined )
 ...
