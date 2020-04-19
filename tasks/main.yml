@@ -21,17 +21,28 @@
   tags:
     - debug
 
-- name: "Debug email sent"
-  mail:
-    from: "root@{{ inventory_hostname }}"
-    to: "{{ debug_email_address | default('root@localhost') }}"
-    subject: "{{ debug_email_subject | default('Ansible variables') }}"
-    charset: us-ascii
-    body: "{{ debug_dir }}/{{ inventory_hostname }}.yml"
-    host: localhost
-    port: 25
-    secure: never
+- name: Send the variables file by email
+  block:
+
+    - name: Slurp the variables file
+      slurp:
+        src: "{{ debug_dir }}/{{ inventory_hostname }}.yml"
+      register: debug_variables_b64encoded
+
+    - name: "Debug email sent"
+      mail:
+        from: "root@{{ inventory_hostname }}"
+        to: "{{ debug_email_address | default('root@localhost') }}"
+        subject: "{{ debug_email_subject | default('Ansible variables') }}"
+        charset: us-ascii
+        body: "{{ debug_variables_b64encoded['content'] | b64decode }}"
+        host: localhost
+        port: 25
+        secure: never
+
   when:
     - ( debug_email is defined ) and ( debug_email == True )
     - ( debug_email_address is defined )
+  tags:
+    - debug
 ...
