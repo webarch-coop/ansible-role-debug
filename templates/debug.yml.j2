@@ -3,6 +3,16 @@
 
 {% if getent_passwd is defined %}
 # getent passwd
+{% for u in getent_passwd | dict2items %}
+{{ u.key }}:
+  username: {{ u.value[1] }}
+  password: {{ u.value[2] }}
+  uid: {{ u.value[3] }} 
+  gid: {{ u.value[4] }} 
+  home: {{ u.value[5] }} 
+  shell: {{ u.value[6] }} 
+{% endfor %}
+
 {{ getent_passwd | to_nice_yaml }}
 {% endif %}
 
