@@ -12,6 +12,7 @@
   shell: {{ u.value[5] }} 
 {% endfor %}
 {% endif %}
+{{ getent_passwd | to_nice_yaml }}
 
 {% if getent_group is defined %}
 # getent group
