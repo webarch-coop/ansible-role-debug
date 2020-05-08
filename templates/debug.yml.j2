@@ -13,22 +13,19 @@ users:
     shell: {{ u.value[5] }} 
 {% endfor %}
 {% endif %}
-{{ getent_passwd | to_nice_yaml }}
 
 {% if getent_group is defined %}
 # getent group
-group:
+groups:
 {% for g in getent_group | dict2items %}
   {{ g.key }}:
     password: {{ g.value[0] }}
     gid: {{ g.value[1] }}
-{% if g.value[2] is defined and g.value[2] | length > 0 %}  group_list:{% set glist = g.value[2].split(';') %}{% for gl in glist %}
-    - {{ gl }}
+{% if g.value[2] is defined and g.value[2] | length > 0 %}    group_list:{% set glist = g.value[2].split(';') %}
+{% for gl in glist %}
+      - {{ gl }}
 {% endfor %}{% endif %}
 {% endfor %}
-
-# getent group
-{{ getent_group | to_nice_yaml }}
 {% endif %}
 
 {% if getent_hosts is defined %}
