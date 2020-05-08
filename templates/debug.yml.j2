@@ -1,6 +1,26 @@
 ---
 # {{ ansible_managed }}
 
+{% if getent_passwd is defined %}
+# getent passwd
+{{ getent_passwd | to_nice_yaml }}
+{% endif %}
+
+{% if getent_group is defined %}
+# getent group
+{{ getent_group | to_nice_yaml }}
+{% endif %}
+
+{% if getent_hosts is defined %}
+# getent hosts
+{{ getent_hosts | to_nice_yaml }}
+{% endif %}
+
+{% if getent_services is defined %}
+# getent services
+{{ getent_services | to_nice_yaml }}
+{% endif %}
+
 {% if users is defined %}
 # User Variables
 {{ users | to_nice_yaml }}

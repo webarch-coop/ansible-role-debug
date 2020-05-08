@@ -1,4 +1,29 @@
 ---
+- name: Getent passwd
+  getent:
+    database: passwd
+  tags:
+    - debug
+
+- name: Getent groups
+  getent:
+    database: group
+    split: ':'
+  tags:
+    - debug
+
+- name: Getent hosts
+  getent:
+    database: hosts
+  tags:
+    - debug
+
+- name: Getent services
+  getent:
+    database: services
+  tags:
+    - debug
+
 - name: "Write variables to {{ debug_dir }}/{{ inventory_hostname }}.yml"
   template:
     src: debug.yml.j2
