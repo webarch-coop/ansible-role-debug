@@ -22,7 +22,7 @@ group:
   {{ g.key }}:
     password: {{ g.value[0] }}
     gid: {{ g.value[1] }}
-{% if g.value[2] is defined and g.value[2] | length > 0 %}  group_list:{% set glist = g.value[3].split(';') %}{% for gl in glist %}
+{% if g.value[2] is defined and g.value[2] | length > 0 %}  group_list:{% set glist = g.value[2].split(';') %}{% for gl in glist %}
     - {{ gl }}
 {% endfor %}{% endif %}
 {% endfor %}
