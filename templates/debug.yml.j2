@@ -21,7 +21,7 @@
   gid: {{ g.value[2] }}
   {% if g.value[3] is defined and g.value[3] | length > 0 %}group_list:{% set glist = g.value[3].split(';') %}{% for gl in glist %}
     - {{ gl }}
-  {% end for %}{% endif %}
+  {% endfor %}{% endif %}
 {% endfor %}
 {{ getent_group | to_nice_yaml }}
 {% endif %}
