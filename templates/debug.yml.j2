@@ -5,19 +5,24 @@
 # getent passwd
 {% for u in getent_passwd | dict2items %}
 {{ u.key }}:
-  username: {{ u.value[0] }}
   password: {{ u.value[1] }}
   uid: {{ u.value[2] }} 
   gid: {{ u.value[3] }} 
   home: {{ u.value[4] }} 
   shell: {{ u.value[5] }} 
 {% endfor %}
-
-{{ getent_passwd | to_nice_yaml }}
 {% endif %}
 
 {% if getent_group is defined %}
 # getent group
+{% for g in getent_group | dict2items %}
+{{ g }}:
+  password: {{ g.value[1] }}
+  gid: {{ g.value[2] }}
+  {% if g.value[3] is defined and g.value[3] | length > 0 %}group_list:{% set glist = g.value[3].split(';') %}{% for gl in glist %}
+    - {{ gl }}
+  {% end for %}{% endif %}
+{% endfor %}
 {{ getent_group | to_nice_yaml }}
 {% endif %}
 
