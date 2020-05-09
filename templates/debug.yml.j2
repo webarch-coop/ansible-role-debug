@@ -2,7 +2,8 @@
 # {{ ansible_managed }}
 
 {% if getent_passwd is defined %}
-# getent passwd
+# The following dictionary is generated from getent passwd and the template for
+# this file https://git.coop/webarch/debug/-/blob/master/templates/debug.yml.j2
 users:
 {% for u in getent_passwd | dict2items %}
   {{ u.key }}:
@@ -15,7 +16,8 @@ users:
 {% endif %}
 
 {% if getent_group is defined %}
-# getent group
+# The following dictionary is generated from getent group and the template for
+# this file https://git.coop/webarch/debug/-/blob/master/templates/debug.yml.j2
 groups:
 {% for g in getent_group | dict2items %}
   {{ g.key }}:
@@ -23,7 +25,7 @@ groups:
     gid: {{ g.value[1] }}
 {% if g.value[2] is defined and g.value[2] | length > 0 %}
     group_list:
-{% set glist = g.value[2].split(',') %}
+{% set glist = g.value[2].split(',') %}{# ' quote for vim yaml syntax highlighting #}
 {% for gl in glist %}
       - {{ gl }}
 {% endfor %}
