@@ -59,5 +59,12 @@ groups:
 # Host Variables
 {{ hostvars[inventory_hostname] | to_nice_yaml }}
 
+{% if ansible_facts.packages is defined and ansible_facts.packages | length > 0 %}
+# Package facts
+# The following dictionary is generated from the package_facts module
+# https://docs.ansible.com/ansible/latest/modules/package_facts_module.html
+{{ ansible_facts.packages | to_nice_yaml }}
+{% endif %}
+
 # vim: set ft=yaml: 
 ...

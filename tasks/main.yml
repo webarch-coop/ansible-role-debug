@@ -24,6 +24,12 @@
   tags:
     - debug
 
+- name: Get the apt package facts
+  package_facts:
+    manager: apt
+  tags:
+    - debug
+
 - name: "Write variables to {{ debug_dir }}/{{ inventory_hostname }}.yml"
   template:
     src: debug.yml.j2
