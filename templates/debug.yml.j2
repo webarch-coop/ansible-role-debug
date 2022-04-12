@@ -4,6 +4,8 @@
 {% if getent_passwd is defined %}
 # The following dictionary is generated from getent passwd and the template for
 # this file https://git.coop/webarch/debug/-/blob/master/templates/debug.yml.j2
+#
+# for u in getent_passwd | dict2items
 users:
 {% for u in getent_passwd | dict2items %}
   {{ u.key }}:
@@ -18,6 +20,8 @@ users:
 {% if getent_group is defined %}
 # The following dictionary is generated from getent group and the template for
 # this file https://git.coop/webarch/debug/-/blob/master/templates/debug.yml.j2
+#
+# for g in getent_group | dict2items
 groups:
 {% for g in getent_group | dict2items %}
   {{ g.key }}:
@@ -35,34 +39,48 @@ groups:
 
 {% if getent_hosts is defined %}
 # getent hosts
+#
+# getent_hosts | to_nice_yaml
 {{ getent_hosts | to_nice_yaml }}
 {% endif %}
 
 {% if getent_services is defined %}
 # getent services
+#
+# getent_services | to_nice_yaml
 {{ getent_services | to_nice_yaml }}
 {% endif %}
 
 {% if users is defined %}
 # User Variables
+#
+# users | to_nice_yaml
 {{ users | to_nice_yaml }}
 {% endif %}
 
 {% if environment is defined and environment != [] %}
 # Environment Variables
+#
+# environment | to_nice_yaml
 {{ environment | to_nice_yaml }}
 {% endif %}
 
 # Group Variables
+#
+# groups | to_nice_yaml
 {{ groups | to_nice_yaml }}
 
 # Host Variables
+# 
+# hostvars[inventory_hostname] | to_nice_yaml
 {{ hostvars[inventory_hostname] | to_nice_yaml }}
 
 {% if ansible_facts.packages is defined and ansible_facts.packages | length > 0 %}
 # Package facts
 # The following dictionary is generated from the package_facts module
 # https://docs.ansible.com/ansible/latest/modules/package_facts_module.html
+# 
+# ansible_facts.packages | to_nice_yaml
 {{ ansible_facts.packages | to_nice_yaml }}
 {% endif %}
 
