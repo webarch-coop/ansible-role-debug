@@ -32,7 +32,7 @@
       debug: 
         var: pkg
       when: pkg.key is regex('^mariadb')
-      loop: "{{ ansible_facts.packages }}"
+      loop: "{{ ansible_facts.packages | dict2items }}"
       loop_control:
         loop_var: pkg
         label: "{{ pkg.key }}"
