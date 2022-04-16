@@ -1,41 +1,32 @@
 ---
+- name: Generate and write debugging info
+  block:
+
 - name: Packages present
   apt:
     pkg:
       - python3-apt
-  tags:
-    - debug
 
 - name: Getent passwd
   getent:
     database: passwd
-  tags:
-    - debug
 
 - name: Getent groups
   getent:
     database: group
     split: ':'
-  tags:
-    - debug
 
 - name: Getent hosts
   getent:
     database: hosts
-  tags:
-    - debug
 
 - name: Getent services
   getent:
     database: services
-  tags:
-    - debug
 
 - name: Get the apt package facts
   package_facts:
     manager: apt
-  tags:
-    - debug
 
 - name: Loop through the packages to check if MariaDB is installed
   set_fact:
@@ -45,13 +36,13 @@
   loop_control:
     loop_var: pkg
     label: "{{ pkg.key }}"
-  tags:
-    - debug
+
+- name: Debug debug_mariadb variable
+  debug:
+    var: debug_mariadb
 
 - name: Debug fail
   fail:
-  tags:
-    - debug
 
 - name: "Write variables to {{ debug_dir }}/{{ inventory_hostname }}.yml"
   template:
@@ -60,8 +51,6 @@
     owner: "{{ debug_owner }}"
     group: "{{ debug_group }}"
   check_mode: false
-  tags:
-    - debug
 
 - name: Fetch the variables file
   fetch:
@@ -72,8 +61,6 @@
   when:
     - debug_fetch is defined
     - debug_fetch
-  tags:
-    - debug
 
 - name: Send the variables file by email
   block:
@@ -97,6 +84,7 @@
   when:
     - ( debug_email is defined ) and ( debug_email == True )
     - ( debug_email_address is defined )
+
   tags:
-    - debug
+- debug
 ...
