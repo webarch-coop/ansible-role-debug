@@ -3,46 +3,80 @@
   block:
 
     - name: Packages present
-      apt:
+      ansible.builtin.apt:
         pkg:
           - python3-apt
 
     - name: Getent passwd
-      getent:
+      ansible.builtin.getent:
         database: passwd
 
     - name: Getent groups
-      getent:
+      ansible.builtin.getent:
         database: group
         split: ':'
 
     - name: Getent hosts
-      getent:
+      ansible.builtin.getent:
         database: hosts
 
     - name: Getent services
-      getent:
+      ansible.builtin.getent:
         database: services
 
     - name: Get the apt package facts
-      package_facts:
+      ansible.builtin.package_facts:
         manager: apt
 
     - name: Loop through the packages to check if MariaDB is installed
-      debug: 
-        var: pkg
+      ansible.builtin.set_fact:
+        debug_mariadb: true
       when: pkg.key is regex('^mariadb-server$')
       loop: "{{ ansible_facts.packages | dict2items }}"
       loop_control:
         loop_var: pkg
         label: "{{ pkg.key }}"
 
-    # - name: Debug debug_mariadb variable
-    #   debug:
-    #     var: debug_mariadb
+    - name: MariaDB facts
+      block:
 
-    - name: Debug fail
-      fail:
+        - name: Stat /root/.my.cnf
+          ansible.builtin.stat:
+            path: /root/.my.cnf
+          register: debug_mariadb_root_mycnf
+
+        - name: Query the MariaDB version and databases using the /root/.my.cnf file
+          community.mysql.mysql_info:
+            filter:
+              - databases
+              - engines
+              - global_status
+              - settings
+              - users
+              - version
+            config_file: /root/.my.cnf
+            login_user: root
+            login_host: localhost
+            login_port: 3306
+          register: debug_mariadb_info
+          when: debug_mariadb_root_mycnf.stat.exists
+
+        - name: Query the MariaDB version and databases using a socket
+          community.mysql.mysql_info:
+            filter:
+              - databases
+              - engines
+              - global_status
+              - settings
+              - users
+              - version
+            return_empty_dbs: true
+            login_user: root
+            login_unix_socket: /run/mysqld/mysqld.sock
+          register: debug_mariadb_info
+          when: not debug_mariadb_root_mycnf.stat.exists
+
+      when: ( debug_mariadb is defined ) and ( debug_mariadb )
 
     - name: "Write variables to {{ debug_dir }}/{{ inventory_hostname }}.yml"
       template:

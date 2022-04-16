@@ -84,5 +84,12 @@ groups:
 {{ ansible_facts.packages | to_nice_yaml }}
 {% endif %}
 
+{% if debug_mariadb_info is defined and debug_mariadb_info | length > 0 %}
+# MariaDB Variables
+#
+# community.mysql.mysql_info
+{{ debug_mariadb_info | to_nice_yaml }}
+{% endif %}
+
 # vim: set ft=yaml: 
 ...
