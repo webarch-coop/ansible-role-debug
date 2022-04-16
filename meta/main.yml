@@ -1,18 +1,22 @@
 ---
 galaxy_info:
-  role_name: dbug
+  role_name: debug
   author: Chris Croome
+  namespace: chriscroome
   description: Ansible role for debugging
   company: Webarchitects Co-operative
-  license: license (GPLv3)
-  min_ansible_version: 2.6
+  license: GNU General Public License v3.0 (GPLv3)
+  min_ansible_version: 2.9
   platforms:
     - name: debian
       versions:
+        - bookworm
+        - bullseye
         - buster
         - stretch
     - name: ubuntu
       versions:
+        - focal
         - bionic
         - xenial
   galaxy_tags: []
