@@ -37,6 +37,15 @@
   tags:
     - debug
 
+- name: Loop through the packages to check if MariaDB is installed
+  set_fact:
+    debug_mariadb: true
+  when: pkg.key == "mariadb" 
+  loop: "{{ ansible_facts.packages | dict2items }}"
+  loop_control:
+    loop_var: pkg
+    label: "{{ pkg.key }}"
+
 - name: "Write variables to {{ debug_dir }}/{{ inventory_hostname }}.yml"
   template:
     src: debug.yml.j2
