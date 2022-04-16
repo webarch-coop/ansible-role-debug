@@ -31,7 +31,7 @@
     - name: Loop through the packages to check if MariaDB is installed
       debug: 
         var: pkg
-      when: pkg.key is regex('^mariadb')
+      when: pkg.key is regex('^mariadb-server$')
       loop: "{{ ansible_facts.packages | dict2items }}"
       loop_control:
         loop_var: pkg
