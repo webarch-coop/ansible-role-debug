@@ -1,5 +1,7 @@
 ---
 debug_dir: /root
+debug_file: "{{ inventory_hostname }}.yml"
+debug_mode: 0640
 debug_owner: root
 debug_group: root
 # If debug_fetch is true the file will be written to
