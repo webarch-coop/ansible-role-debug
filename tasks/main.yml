@@ -29,17 +29,17 @@
         manager: apt
 
     - name: Loop through the packages to check if MariaDB is installed
-      set_fact:
-        debug_mariadb: true
-      when: pkg.key == "mariadb" 
-      loop: "{{ ansible_facts.packages | dict2items }}"
+      debug: 
+        var: pkg
+      when: pkg.key is regex('^mariadb')
+      loop: "{{ ansible_facts.packages }}"
       loop_control:
         loop_var: pkg
         label: "{{ pkg.key }}"
 
-    - name: Debug debug_mariadb variable
-      debug:
-        var: debug_mariadb
+    # - name: Debug debug_mariadb variable
+    #   debug:
+    #     var: debug_mariadb
 
     - name: Debug fail
       fail:
