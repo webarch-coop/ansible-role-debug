@@ -82,6 +82,7 @@
       template:
         src: debug.yml.j2
         dest: "{{ debug_dir }}/{{ inventory_hostname }}.yml"
+        mode: 0640
         owner: "{{ debug_owner }}"
         group: "{{ debug_group }}"
       check_mode: false
@@ -116,7 +117,7 @@
             secure: never
 
       when:
-        - ( debug_email is defined ) and ( debug_email == True )
+        - ( debug_email is defined ) and ( debug_email )
         - ( debug_email_address is defined )
 
   tags:
