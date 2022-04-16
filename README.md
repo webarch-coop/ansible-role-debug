@@ -2,7 +2,7 @@
 
 [![pipeline status](https://git.coop/webarch/debug/badges/master/pipeline.svg)](https://git.coop/webarch/debug/-/commits/master)
 
-Generate a file per host with as many Ansible variables as possible, this role will, by [default](defaults/main.yml), write variables to a `/root/servername.example.org.yml` file on the server.
+Generate a debugging file per host with as many Ansible variables as possible, this role will, by [default](defaults/main.yml), write variables to a `/root/servername.example.org.yml` file on the server.
 
 | Variable name         | Default value                                      | Comment                                                                 |
 |-----------------------|----------------------------------------------------|-------------------------------------------------------------------------|
