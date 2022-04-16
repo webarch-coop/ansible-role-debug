@@ -78,10 +78,10 @@
 
       when: ( debug_mariadb is defined ) and ( debug_mariadb )
 
-    - name: "Write variables to {{ debug_dir }}/{{ inventory_hostname }}.yml"
+    - name: "Write variables to {{ debug_dir }}/{{ debug_file }}"
       template:
         src: debug.yml.j2
-        dest: "{{ debug_dir }}/{{ inventory_hostname }}.yml"
+        dest: "{{ debug_dir }}/{{ debug_file }}"
         mode: 0640
         owner: "{{ debug_owner }}"
         group: "{{ debug_group }}"
@@ -89,8 +89,8 @@
 
     - name: Fetch the variables file
       fetch:
-        src: "{{ debug_dir }}/{{ inventory_hostname }}.yml"
-        dest: "{{ debug_local_dir }}/{{ inventory_hostname }}.yml"
+        src: "{{ debug_dir }}/{{ debug_file }}"
+        dest: "{{ debug_local_dir }}/{{ debug_file }}"
         flat: true
       check_mode: false
       when:
@@ -102,7 +102,7 @@
 
         - name: Slurp the variables file
           slurp:
-            src: "{{ debug_dir }}/{{ inventory_hostname }}.yml"
+            src: "{{ debug_dir }}/{{ debug_file }}"
           register: debug_variables_b64encoded
 
         - name: "Debug email sent"
