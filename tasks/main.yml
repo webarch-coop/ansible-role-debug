@@ -2,89 +2,89 @@
 - name: Generate and write debugging info
   block:
 
-- name: Packages present
-  apt:
-    pkg:
-      - python3-apt
+    - name: Packages present
+      apt:
+        pkg:
+          - python3-apt
 
-- name: Getent passwd
-  getent:
-    database: passwd
+    - name: Getent passwd
+      getent:
+        database: passwd
 
-- name: Getent groups
-  getent:
-    database: group
-    split: ':'
+    - name: Getent groups
+      getent:
+        database: group
+        split: ':'
 
-- name: Getent hosts
-  getent:
-    database: hosts
+    - name: Getent hosts
+      getent:
+        database: hosts
 
-- name: Getent services
-  getent:
-    database: services
+    - name: Getent services
+      getent:
+        database: services
 
-- name: Get the apt package facts
-  package_facts:
-    manager: apt
+    - name: Get the apt package facts
+      package_facts:
+        manager: apt
 
-- name: Loop through the packages to check if MariaDB is installed
-  set_fact:
-    debug_mariadb: true
-  when: pkg.key == "mariadb" 
-  loop: "{{ ansible_facts.packages | dict2items }}"
-  loop_control:
-    loop_var: pkg
-    label: "{{ pkg.key }}"
+    - name: Loop through the packages to check if MariaDB is installed
+      set_fact:
+        debug_mariadb: true
+      when: pkg.key == "mariadb" 
+      loop: "{{ ansible_facts.packages | dict2items }}"
+      loop_control:
+        loop_var: pkg
+        label: "{{ pkg.key }}"
 
-- name: Debug debug_mariadb variable
-  debug:
-    var: debug_mariadb
+    - name: Debug debug_mariadb variable
+      debug:
+        var: debug_mariadb
 
-- name: Debug fail
-  fail:
+    - name: Debug fail
+      fail:
 
-- name: "Write variables to {{ debug_dir }}/{{ inventory_hostname }}.yml"
-  template:
-    src: debug.yml.j2
-    dest: "{{ debug_dir }}/{{ inventory_hostname }}.yml"
-    owner: "{{ debug_owner }}"
-    group: "{{ debug_group }}"
-  check_mode: false
+    - name: "Write variables to {{ debug_dir }}/{{ inventory_hostname }}.yml"
+      template:
+        src: debug.yml.j2
+        dest: "{{ debug_dir }}/{{ inventory_hostname }}.yml"
+        owner: "{{ debug_owner }}"
+        group: "{{ debug_group }}"
+      check_mode: false
 
-- name: Fetch the variables file
-  fetch:
-    src: "{{ debug_dir }}/{{ inventory_hostname }}.yml"
-    dest: "{{ debug_local_dir }}/{{ inventory_hostname }}.yml"
-    flat: true
-  check_mode: false
-  when:
-    - debug_fetch is defined
-    - debug_fetch
-
-- name: Send the variables file by email
-  block:
-
-    - name: Slurp the variables file
-      slurp:
+    - name: Fetch the variables file
+      fetch:
         src: "{{ debug_dir }}/{{ inventory_hostname }}.yml"
-      register: debug_variables_b64encoded
+        dest: "{{ debug_local_dir }}/{{ inventory_hostname }}.yml"
+        flat: true
+      check_mode: false
+      when:
+        - debug_fetch is defined
+        - debug_fetch
 
-    - name: "Debug email sent"
-      mail:
-        from: "root@{{ inventory_hostname }}"
-        to: "{{ debug_email_address | default('root@localhost') }}"
-        subject: "{{ debug_email_subject | default('Ansible variables') }}"
-        charset: us-ascii
-        body: "{{ debug_variables_b64encoded['content'] | b64decode }}"
-        host: localhost
-        port: 25
-        secure: never
+    - name: Send the variables file by email
+      block:
 
-  when:
-    - ( debug_email is defined ) and ( debug_email == True )
-    - ( debug_email_address is defined )
+        - name: Slurp the variables file
+          slurp:
+            src: "{{ debug_dir }}/{{ inventory_hostname }}.yml"
+          register: debug_variables_b64encoded
+
+        - name: "Debug email sent"
+          mail:
+            from: "root@{{ inventory_hostname }}"
+            to: "{{ debug_email_address | default('root@localhost') }}"
+            subject: "{{ debug_email_subject | default('Ansible variables') }}"
+            charset: us-ascii
+            body: "{{ debug_variables_b64encoded['content'] | b64decode }}"
+            host: localhost
+            port: 25
+            secure: never
+
+      when:
+        - ( debug_email is defined ) and ( debug_email == True )
+        - ( debug_email_address is defined )
 
   tags:
-- debug
+    - debug
 ...
