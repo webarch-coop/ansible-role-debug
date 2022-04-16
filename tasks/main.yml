@@ -45,9 +45,13 @@
   loop_control:
     loop_var: pkg
     label: "{{ pkg.key }}"
+  tags:
+    - debug
 
 - name: Debug fail
   fail:
+  tags:
+    - debug
 
 - name: "Write variables to {{ debug_dir }}/{{ inventory_hostname }}.yml"
   template:
