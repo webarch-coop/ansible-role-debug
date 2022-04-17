@@ -120,6 +120,7 @@
         - ( debug_email is defined ) and ( debug_email )
         - ( debug_email_address is defined )
 
+  when: debug
   tags:
     - debug
 ...
