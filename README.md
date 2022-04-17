@@ -6,16 +6,17 @@ Generate a debugging file per host with as many Ansible variables as possible, t
 
 | Variable name         | Default value                                      | Comment                                                                 |
 |-----------------------|----------------------------------------------------|-------------------------------------------------------------------------|
+| `debug`               | `true`                                             | Set `debug` to false to prevent any tasks in this role being run        |
 | `debug_dir`           | `/root`                                            | The directory to write the variable file into                           |
 | `debug_file`          | `"{{ inventory_hostname }}.yml"`                   | The file to write the variables into                                    |
-| `debug_mode`          | `0640`                                             | The mode of the variable file                                           |
-| `debug_owner`         | `root`                                             | The owner of the variable file                                          |
-| `debug_group`         | `root`                                             | The group of the variable file                                          |
+| `debug_mode`          | `0640`                                             | The mode of the variables file                                          |
+| `debug_owner`         | `root`                                             | The owner of the variables file                                         |
+| `debug_group`         | `root`                                             | The group of the variables file                                         |
 | `debug_fetch`         | `false`                                            | Set this variable to True to download the results to `debug_local_dir`  |
 | `debug_email`         | `false`                                            | Set this variable to True to email the results to `debug_email_address` |
 | `debug_email_address` | `root@localhost`                                   | Set this variable to the email address to send results to               |
 | `debug_email_subject` | `"Ansible variables for {{ inventory_hostname }}"` | Subject line for the email with the results                             |
-| `debug_local_dir`     | `/tmp`                                             | Local directory to downbload the results to                             |
+| `debug_local_dir`     | `/tmp`                                             | Local directory to download the results to                              |
 
 This role requires a recent version of the [community.mysql collection](https://docs.ansible.com/ansible/latest/collections/community/mysql/), in order to generate MariaDB variables, this can be installed into `~/.ansible/collections/ansible_collections` like this:
 
@@ -27,4 +28,4 @@ The primary URL of this repo is [`https://git.coop/webarch/debug`](https://git.c
 
 The [localhost](https://git.coop/webarch/localhost) repo can be used to run this role on the `localhost`.
 
-This role was inspired by [this role](https://github.com/f500/ansible-dumpall).
+This role was inspired by [dumpall role](https://github.com/f500/ansible-dumpall).
