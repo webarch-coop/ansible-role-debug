@@ -45,21 +45,23 @@
             path: /root/.my.cnf
           register: debug_mariadb_root_mycnf
 
-        - name: Query the MariaDB version and databases using the /root/.my.cnf file
-          community.mysql.mysql_info:
-            filter:
-              - databases
-              - engines
-              - global_status
-              - settings
-              - users
-              - version
-            config_file: /root/.my.cnf
-            login_user: root
-            login_host: localhost
-            login_port: 3306
-          register: debug_mariadb_info
-          when: debug_mariadb_root_mycnf.stat.exists
+        # This is commented out as it fails, see this issue with the MySQL modules
+        # https://github.com/ansible-collections/community.mysql/issues/215
+        # - name: Query the MariaDB version and databases using the /root/.my.cnf file
+        #   community.mysql.mysql_info:
+        #     filter:
+        #       - databases
+        #       - engines
+        #       - global_status
+        #       - settings
+        #       - users
+        #       - version
+        #     config_file: /root/.my.cnf
+        #     login_user: root
+        #     login_host: localhost
+        #     login_port: 3306
+        #   register: debug_mariadb_info
+        #   when: debug_mariadb_root_mycnf.stat.exists
 
         - name: Query the MariaDB version and databases using a socket
           community.mysql.mysql_info:
