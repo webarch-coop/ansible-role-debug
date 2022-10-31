@@ -38,16 +38,16 @@
         var: ansible_facts.packages
         verbosity: 2
 
-    - fail:
-
-    - name: Loop through the packages to check if MariaDB is installed
-      ansible.builtin.set_fact:
-        debug_mariadb: true
-      when: pkg.key is regex('^mariadb-server$')
-      loop: "{{ ansible_facts.packages | dict2items }}"
-      loop_control:
-        loop_var: pkg
-        label: "{{ pkg.key }}"
+#    - fail:
+#
+#    - name: Loop through the packages to check if MariaDB is installed
+#      ansible.builtin.set_fact:
+#        debug_mariadb: true
+#      when: pkg.key is regex('^mariadb-server$')
+#      loop: "{{ ansible_facts.packages | dict2items }}"
+#      loop_control:
+#        loop_var: pkg
+#        label: "{{ pkg.key }}"
 
     - name: MariaDB facts
       block:
@@ -90,7 +90,7 @@
           register: debug_mariadb_info
           when: not debug_mariadb_root_mycnf.stat.exists
 
-      when: ("mariadb-server" in ansible_facts.packages())
+      when: ("mariadb-server" in ansible_facts.packages.keys() | list)
 
     - name: "Write variables to {{ debug_dir }}/{{ debug_file }}"
       template:
