@@ -28,6 +28,11 @@
       ansible.builtin.package_facts:
         manager: apt
 
+    - name: Debug the apt packages
+      ansible.builtin.debug:
+        var: ansible_facts.packages()
+        verbosity: 2
+
     - name: Debug the apt package facts
       ansible.builtin.debug:
         var: ansible_facts.packages
@@ -85,7 +90,7 @@
           register: debug_mariadb_info
           when: not debug_mariadb_root_mycnf.stat.exists
 
-      when: ( debug_mariadb is defined ) and ( debug_mariadb )
+      when: ("mariadb-server" in ansible_facts.packages())
 
     - name: "Write variables to {{ debug_dir }}/{{ debug_file }}"
       template:
