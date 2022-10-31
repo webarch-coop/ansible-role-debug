@@ -33,17 +33,6 @@
         var: ansible_facts.packages.keys()
         verbosity: 2
 
-#    - fail:
-#
-#    - name: Loop through the packages to check if MariaDB is installed
-#      ansible.builtin.set_fact:
-#        debug_mariadb: true
-#      when: pkg.key is regex('^mariadb-server$')
-#      loop: "{{ ansible_facts.packages | dict2items }}"
-#      loop_control:
-#        loop_var: pkg
-#        label: "{{ pkg.key }}"
-
     - name: MariaDB facts
       block:
 
@@ -87,8 +76,8 @@
 
       when: ("mariadb-server" in ansible_facts.packages.keys() | list)
 
-    - name: "Write variables to {{ debug_dir }}/{{ debug_file }}"
-      template:
+    - name: Write variables file
+      ansible.builtin.template:
         src: debug.yml.j2
         dest: "{{ debug_dir }}/{{ debug_file }}"
         mode: 0640
@@ -97,7 +86,7 @@
       check_mode: false
 
     - name: Fetch the variables file
-      fetch:
+      ansible.builtin.fetch:
         src: "{{ debug_dir }}/{{ debug_file }}"
         dest: "{{ debug_local_dir }}/{{ debug_file }}"
         flat: true
@@ -110,12 +99,12 @@
       block:
 
         - name: Slurp the variables file
-          slurp:
+          ansible.builtin.slurp:
             src: "{{ debug_dir }}/{{ debug_file }}"
           register: debug_variables_b64encoded
 
-        - name: "Debug email sent"
-          mail:
+        - name: Debug email sent
+          community.general.mail:
             from: "root@{{ inventory_hostname }}"
             to: "{{ debug_email_address | default('root@localhost') }}"
             subject: "{{ debug_email_subject | default('Ansible variables') }}"
