@@ -33,11 +33,6 @@
         var: ansible_facts.packages.keys()
         verbosity: 2
 
-    - name: Debug the apt package facts
-      ansible.builtin.debug:
-        var: ansible_facts.packages
-        verbosity: 2
-
 #    - fail:
 #
 #    - name: Loop through the packages to check if MariaDB is installed
