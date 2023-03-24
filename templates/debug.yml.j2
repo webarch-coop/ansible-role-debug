@@ -10,10 +10,10 @@ users:
 {% for u in getent_passwd | dict2items %}
   {{ u.key }}:
     password: {{ u.value[1] }}
-    uid: {{ u.value[2] }} 
-    gid: {{ u.value[3] }} 
-    home: {{ u.value[4] }} 
-    shell: {{ u.value[5] }} 
+    uid: {{ u.value[2] }}
+    gid: {{ u.value[3] }}
+    home: {{ u.value[4] }}
+    shell: {{ u.value[5] }}
 {% endfor %}
 {% endif %}
 
@@ -71,7 +71,7 @@ groups:
 {{ groups | to_nice_yaml }}
 
 # Host Variables
-# 
+#
 # hostvars[inventory_hostname] | to_nice_yaml
 {{ hostvars[inventory_hostname] | to_nice_yaml }}
 
@@ -79,7 +79,7 @@ groups:
 # Package facts
 # The following dictionary is generated from the package_facts module
 # https://docs.ansible.com/ansible/latest/modules/package_facts_module.html
-# 
+#
 # ansible_facts.packages | to_nice_yaml
 {{ ansible_facts.packages | to_nice_yaml }}
 {% endif %}
@@ -91,5 +91,5 @@ groups:
 {{ debug_mariadb_info | to_nice_yaml }}
 {% endif %}
 
-# vim: set ft=yaml: 
+# vim: set ft=yaml:
 ...
