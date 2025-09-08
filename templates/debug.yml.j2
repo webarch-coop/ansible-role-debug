@@ -84,6 +84,15 @@ groups:
 {{ ansible_facts.packages | to_nice_yaml }}
 {% endif %}
 
+{% if ansible_facts.services is defined and ansible_facts.services | length > 0 %}
+# Service facts
+# The following dictionary is generated from the service_facts module
+# https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_facts_module.html
+#
+# ansible_facts.services | to_nice_yaml
+{{ ansible_facts.services | to_nice_yaml }}
+{% endif %}
+
 {% if debug_mariadb_info is defined and debug_mariadb_info | length > 0 %}
 # MariaDB Variables
 #

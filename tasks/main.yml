@@ -24,6 +24,9 @@
       ansible.builtin.getent:
         database: services
 
+    - name: Gather service facts
+      ansible.builtin.service_facts:
+
     - name: Get the apt package facts
       ansible.builtin.package_facts:
         manager: apt
